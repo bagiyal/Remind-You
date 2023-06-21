@@ -28,29 +28,29 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 import {NoteTakingInput} from './src/NoteTakingInput';
-import {HomeScreen} from './src/HomeScreen';
+import {HomeScreen} from './src/screens/HomeScreen';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {RootStackParamList} from './types';
+import {EditNoteScreens} from './src/screens/EditNoteScreens';
 
 function App(): JSX.Element {
-  const [shouldCreateNewNote, setShouldCreateNewNote] =
-    useState<boolean>(false);
-  const saveNote = async (text: string) => {
-    try{
-      // const jsonValue = typeof text === 'string' ? text: JSON.stringify(text);
-      await AsyncStorage.setItem("note", JSON.stringify(text));
-    }catch{
-
-    }
-    setShouldCreateNewNote(false);
-  };
+  const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
-    <View style={styles.container}>
-      <StatusBar barStyle={'dark-content'} />
-      {shouldCreateNewNote ? (
-        <NoteTakingInput saveNote={saveNote} />
-      ) : (
-        <HomeScreen toggleNewNote={setShouldCreateNewNote} />
-      )}
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="EditNote" component={EditNoteScreens} />
+      </Stack.Navigator>
+      {/* <View style={styles.container}>
+        <StatusBar barStyle={'dark-content'} />
+        {shouldCreateNewNote ? (
+          <NoteTakingInput saveNote={saveNote} />
+        ) : (
+          <HomeScreen toggleNewNote={setShouldCreateNewNote} />
+        )}
+      </View> */}
+    </NavigationContainer>
   );
 }
 
