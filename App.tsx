@@ -33,13 +33,21 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {RootStackParamList} from './types';
 import {EditNoteScreens} from './src/screens/EditNoteScreens';
+import {NewNoteButton} from './src/screens/NewNoteButton';
 
 function App(): JSX.Element {
   const Stack = createNativeStackNavigator<RootStackParamList>();
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{
+            headerTitle: 'All Notes',
+            headerRight: () => <NewNoteButton />,
+          }}
+        />
         <Stack.Screen name="EditNote" component={EditNoteScreens} />
       </Stack.Navigator>
       {/* <View style={styles.container}>

@@ -28,14 +28,24 @@ export const getNote = async (id: string) => {
   return note;
 }
 
-export const saveNote = async (text: string) => {
+export const saveNote = async (text: string, id: string | undefined) => {
   // AsyncStorage.clear();
   const noteStore = await getAllNotes();
-  const notes = [...noteStore.notes, { id: uuidv4(), text: text }];
-  try {
-    console.log(' json value ', notes,Date.now);
-    await AsyncStorage.setItem(STORE_KEY, JSON.stringify({ notes: notes }));
-  } catch (error) {
-    console.log('Error ', error);
+  if (id) {
+    const noteStore = await getAllNotes();
+    const noteIndex = noteStore.notes.findIndex(note => note.id == id);
+    // const notes = [...noteStore.notes, {id: note, text: text}];
+    // console.log(" this id hai ",noteStore,note,notes);
+    noteStore.notes.splice(noteIndex,1,{ id: uuidv4(), text: text });
+  } else {
+    noteStore.notes.push({ id: uuidv4(), text: text });
+    // const notes = [...noteStore.notes, { id: uuidv4(), text: text }];
+    try {
+      // console.log(' json value ', notes, Date.now);
+      await AsyncStorage.setItem(STORE_KEY,JSON.stringify(noteStore));
+    } catch (error) {
+      console.log('Error ', error);
+    }
   }
+
 };
