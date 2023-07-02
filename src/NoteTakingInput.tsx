@@ -1,9 +1,16 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  createRef,
+  useRef,
+} from 'react';
 import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
 import {getNote, saveNote} from './services/noteStoreServices';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {EditScreenRouteProp, ScreenNavigationProp} from '../types';
+import {RichToolbar, RichEditor, actions} from 'react-native-pell-rich-editor';
 
 type Props = {
   noteId: string | undefined;
@@ -34,7 +41,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         <Button title="Back" color="#ffb703" onPress={saveNoteHandler} />
       ),
     });
-  }, [navigation, noteId, text,headtext]);
+  }, [navigation, noteId, text, headtext]);
 
   useEffect(() => {
     if (noteId) {
@@ -48,6 +55,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         });
     }
   }, []);
+  const richText = useRef<RichEditor>();
 
   return (
     <>
@@ -72,6 +80,33 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         onChangeText={setText}
         // autoFocus={true}
       />
+      <View>
+        {/* <RichEditor
+        ref={richText}
+        onChange={descriptionText => {
+          console.log('descriptionText:', descriptionText);
+        }}
+      /> */}
+        <RichEditor
+          ref={richText} // from useRef()
+          // onChange={richTextHandle}
+          placeholder="Write your cool content here :)"
+          androidHardwareAccelerationDisabled={true}
+          // style={styles.richTextEditorStyle}
+          initialHeight={250}
+        />
+        <RichToolbar
+          ref={richText}
+          editor={richText}
+          actions={[
+            actions.setBold,
+            actions.setItalic,
+            actions.setUnderline,
+            actions.heading1,
+          ]}
+        />
+      </View>
+
       {/* <Button title="Save Note" onPress={saveNoteHandler} /> */}
     </>
   );
