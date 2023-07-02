@@ -17,11 +17,15 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   const navigation = useNavigation<ScreenNavigationProp>();
   // const noteId = route.params.noteId;
   const saveNoteHandler = async () => {
-    console.log(" function call ",text,headtext);
-    saveNote(text, headtext, noteId);
-    // navigation.navigate("Home");
-    if (navigation.canGoBack()) {
-      navigation.goBack();
+    try {
+      console.log(' function call ', headtext, text);
+      await saveNote(text, headtext, noteId);
+      // navigation.navigate("Home");
+      if (navigation.canGoBack()) {
+        navigation.goBack();
+      }
+    } catch (error) {
+      console.error('Error saving note:', error);
     }
   };
   useLayoutEffect(() => {
@@ -30,16 +34,19 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         <Button title="Back" color="#ffb703" onPress={saveNoteHandler} />
       ),
     });
-  }, [navigation, noteId, text]);
+  }, [navigation, noteId, text,headtext]);
 
   useEffect(() => {
     if (noteId) {
-      getNote(noteId).then((result) => {
-        setText(result?.text ?? '');
-        setHeadText(result?.headtext ?? '');
-      });
+      getNote(noteId)
+        .then(result => {
+          setText(result?.text ?? '');
+          setHeadText(result?.headtext ?? '');
+        })
+        .catch(error => {
+          console.error('Error retrieving note:', error);
+        });
     }
-    console.log(' test', text);
   }, []);
 
   return (
@@ -48,9 +55,9 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         <TextInput
           value={headtext}
           style={styles.headingText}
-          onChangeText={(text) => {
-            setHeadText(text);
-            console.log('headtext:', text);
+          onChangeText={value => {
+            setHeadText(value);
+            console.log(' live ', headtext);
           }}
           multiline={true}
           placeholder="Heading"

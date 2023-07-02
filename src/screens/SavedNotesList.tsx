@@ -18,10 +18,12 @@ export const SavedNotesList: React.FC = () => {
     <ScrollView>
       <View style={styles.container}>
         {noteText.map(note => (
-          <Pressable onPress={() => navigation.navigate('EditNote',{noteId: note.id})}>
+          <Pressable
+          key={note.id} 
+          onPress={() => navigation.navigate('EditNote',{noteId: note.id})}>
           <View style={styles.row}>
-            <Text style={styles.note} key={note.id}>
-              {note.text.length == 0 ? 'Blank Note' : note.text}
+            <Text style={styles.note}>
+              {note.headtext.length == 0 ? 'Blank Note' : note.headtext}
             </Text>
           </View>
           </Pressable>
