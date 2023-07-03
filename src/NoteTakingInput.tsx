@@ -34,10 +34,17 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   const route = useRoute<EditScreenRouteProp>();
   const navigation = useNavigation<ScreenNavigationProp>();
   // const noteId = route.params.noteId;
+  const htmlToPlain = (htmlString: string): string => {
+    const plainString = htmlString.replace(/<div[^>]*>|<\/div>/g, '');
+    return plainString;
+  };
   const saveNoteHandler = async () => {
+    const headx: string = htmlToPlain(headtext);
+    const mainText: string = htmlToPlain(text);
+    console.log(' headx ', headx, mainText);
     try {
       console.log(' function call ', headtext, text);
-      await saveNote(text, headtext, noteId);
+      await saveNote(mainText, headx, noteId);
       // navigation.navigate("Home");
       if (navigation.canGoBack()) {
         navigation.goBack();
@@ -73,11 +80,24 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         <KeyboardAvoidingView
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           style={{flex: 1}}>
-          <Text>Description:</Text>
+          {/* <Text>Description:</Text> */}
           <RichEditor
             ref={richText}
             onChange={descriptionText => {
               console.log('descriptionText:', descriptionText);
+              setHeadText(descriptionText);
+            }}
+            initialContentHTML="Abhishek Bagiyal"
+          />
+          <RichEditor
+            ref={richText}
+            onChange={descriptionText => {
+              console.log('descriptionText:', descriptionText);
+              setText(descriptionText);
+            }}
+            initialContentHTML="Description Text"
+            editorStyle={{
+              backgroundColor: 'blue',
             }}
           />
         </KeyboardAvoidingView>
