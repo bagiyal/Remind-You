@@ -6,16 +6,27 @@ import React, {
   createRef,
   useRef,
 } from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import {
+  Button,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 import {getNote, saveNote} from './services/noteStoreServices';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {EditScreenRouteProp, ScreenNavigationProp} from '../types';
 import {RichToolbar, RichEditor, actions} from 'react-native-pell-rich-editor';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 type Props = {
   noteId: string | undefined;
 };
-
+const handleHead = ({tintColor}) => <Text style={{color: tintColor}}>H1</Text>;
 export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   const [text, setText] = useState<String>('');
   const [headtext, setHeadText] = useState<String>('');
@@ -55,60 +66,34 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         });
     }
   }, []);
-  const richText = useRef<RichEditor>();
-
+  const richText = useRef<RichEditor>(null);
   return (
-    <>
-      <View style={styles.header}>
-        <TextInput
-          value={headtext}
-          style={styles.headingText}
-          onChangeText={value => {
-            setHeadText(value);
-            console.log(' live ', headtext);
-          }}
-          multiline={true}
-          placeholder="Heading"
-          autoFocus={true}
-        />
-      </View>
-      <View style={styles.line}></View>
-      <TextInput
-        multiline={true}
-        style={styles.textInput}
-        value={text}
-        onChangeText={setText}
-        // autoFocus={true}
-      />
-      <View>
-        {/* <RichEditor
-        ref={richText}
-        onChange={descriptionText => {
-          console.log('descriptionText:', descriptionText);
-        }}
-      /> */}
-        <RichEditor
-          ref={richText} // from useRef()
-          // onChange={richTextHandle}
-          placeholder="Write your cool content here :)"
-          androidHardwareAccelerationDisabled={true}
-          // style={styles.richTextEditorStyle}
-          initialHeight={250}
-        />
-        <RichToolbar
-          ref={richText}
-          editor={richText}
-          actions={[
-            actions.setBold,
-            actions.setItalic,
-            actions.setUnderline,
-            actions.heading1,
-          ]}
-        />
-      </View>
+    <SafeAreaView>
+      <ScrollView>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          style={{flex: 1}}>
+          <Text>Description:</Text>
+          <RichEditor
+            ref={richText}
+            onChange={descriptionText => {
+              console.log('descriptionText:', descriptionText);
+            }}
+          />
+        </KeyboardAvoidingView>
+      </ScrollView>
 
-      {/* <Button title="Save Note" onPress={saveNoteHandler} /> */}
-    </>
+      <RichToolbar
+        editor={richText}
+        actions={[
+          actions.setBold,
+          actions.setItalic,
+          actions.setUnderline,
+          actions.heading1,
+        ]}
+        iconMap={{[actions.heading1]: handleHead}}
+      />
+    </SafeAreaView>
   );
 };
 
