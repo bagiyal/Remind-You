@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     backgroundColor:"white",
   },
   row: {
-    width: '90%',
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
     borderBottomWidth:1,
