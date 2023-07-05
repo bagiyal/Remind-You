@@ -15,12 +15,14 @@ export const SavedNotesList: React.FC = () => {
   });
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.scrollDesgin} >
       <View style={styles.container}>
         {noteText.map(note => (
           <Pressable
           key={note.id} 
-          onPress={() => navigation.navigate('EditNote',{noteId: note.id})}>
+          onPress={() => navigation.navigate('EditNote',{noteId: note.id})}
+          style={styles.noteDesgin}
+          >
           <View style={styles.row}>
             <Text style={styles.note}>
               {note.headtext.length == 0 ? 'Blank Note' : note.headtext}
@@ -34,9 +36,15 @@ export const SavedNotesList: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
+  scrollDesgin: {
+    marginBottom:62,
+    paddingBottom:0,
+    backgroundColor:'blue'
+  },
   container: {
     width: '100%',
     flex: 1,
+    backgroundColor:"white",
   },
   row: {
     width: '90%',
@@ -45,11 +53,28 @@ const styles = StyleSheet.create({
     borderBottomWidth:1,
     borderBottomColor: '#e6e6e6',
     alignSelf: 'center',
-    height:90,
+    height:120,
+    backgroundColor:'blue',
+    margin:'5%',
+    color:'white',
+    borderRadius:8,
+    borderBottomEndRadius:8,
   },
   note: {
     fontSize: 17,
     // margin:'0%',
-    paddingVertical: 20,
+    paddingVertical: 0,
+    color:'white',
+    top:'-30%',
   },
+  noteDesgin: {
+    // width:'40%',
+    // height:'40%',
+    // backgroundColor:'blue',
+    // margin:'5%',
+    // color:'white',
+    // borderRadius:8,
+    // borderBottomEndRadius:8,
+
+  }
 });
