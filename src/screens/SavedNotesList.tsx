@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
   },
   row: {
     width: '40%',
-    flex: 1,
-    flexDirection:'row',
     borderBottomWidth:1,
     borderBottomColor: '#e6e6e6',
     height:120,
@@ -59,6 +57,11 @@ const styles = StyleSheet.create({
     borderRadius:8,
     borderBottomEndRadius:8,
     left:0,
+    flex: 1,
+    flexDirection:'row',
+    flexWrap:'wrap',
+    flexGrow:1,
+    flexBasis:40,
   },
   note: {
     fontSize: 17,
@@ -78,3 +81,6 @@ const styles = StyleSheet.create({
 
   }
 });
+ 
+
+// checking data 
