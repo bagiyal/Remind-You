@@ -26,6 +26,10 @@ export const SavedNotesList: React.FC = () => {
           <View style={styles.row}>
             <Text style={styles.note}>
               {note.headtext.length == 0 ? 'Blank Note' : note.headtext}
+              {'\n'}
+            </Text>
+            <Text style={styles.note}>
+              {note.text.length == 0 ? ' ' : note.text}
             </Text>
           </View>
           </Pressable>
@@ -61,7 +65,6 @@ const styles = StyleSheet.create({
     flexDirection:'row',
     flexWrap:'wrap',
     flexGrow:1,
-    flexBasis:40,
   },
   note: {
     fontSize: 17,
@@ -69,6 +72,8 @@ const styles = StyleSheet.create({
     paddingVertical: 0,
     color:'white',
     top:'-30%',
+    // flex:1,
+    // flexDirection:'row'
   },
   noteDesgin: {
     // width:'40%',
@@ -78,7 +83,10 @@ const styles = StyleSheet.create({
     // color:'white',
     // borderRadius:8,
     // borderBottomEndRadius:8,
-
+    // flex:1,
+    // flexDirection:'row-reverse',
+    // width:'40%',
+    // flexWrap:'wrap'
   }
 });
  
