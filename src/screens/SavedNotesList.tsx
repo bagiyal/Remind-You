@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, StyleSheet, ScrollView, Pressable} from 'react-native';
+import {View, Text, StyleSheet, ScrollView, Pressable, FlatList, Dimensions} from 'react-native';
 import {useState} from 'react';
 import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import {Note, getAllNotes} from '../services/noteStoreServices';
@@ -15,27 +15,64 @@ export const SavedNotesList: React.FC = () => {
   });
 
   return (
-    <ScrollView style={styles.scrollDesgin} >
-      <View style={styles.container}>
-        {noteText.map(note => (
-          <Pressable
-          key={note.id} 
-          onPress={() => navigation.navigate('EditNote',{noteId: note.id})}
-          style={styles.noteDesgin}
-          >
-          <View style={styles.row}>
-            <Text style={styles.note}>
-              {note.headtext.length == 0 ? 'Blank Note' : note.headtext}
-              {'\n'}
-            </Text>
-            <Text style={styles.note}>
-              {note.text.length == 0 ? ' ' : note.text}
-            </Text>
+<View style={{ flex: 1 }}>
+  <View style={{ width: '100%', alignItems: 'center' }}>
+    <FlatList
+      data={noteText}
+      numColumns={2}
+      renderItem={({ item, index }) => {
+        return (
+          <View style={{
+            width: Dimensions.get('window').width / 2 - 30,
+            height: 200,
+            backgroundColor: 'green',
+            margin: 10,
+            marginTop:20,
+            borderRadius:18,
+          }}>
+            <Pressable
+              key={item.id}
+              onPress={() => navigation.navigate('EditNote', { noteId: item.id })}
+              style={{justifyContent:'center',marginTop:40,left:10,}}
+            >
+              <View>
+                <Text style={styles.note}>
+                  {item.headtext.length === 0 ? 'Blank Note' : item.headtext}
+                  {'\n'}
+                </Text>
+                <Text style={styles.note}>
+                  {item.text.length === 0 ? ' ' : item.text}
+                </Text>
+              </View>
+            </Pressable>
           </View>
-          </Pressable>
-        ))}
-      </View>
-    </ScrollView>
+        )
+      }}
+    />
+  </View>
+</View>
+
+    // <ScrollView style={styles.scrollDesgin} >
+    //   <View style={styles.container}>
+    //     {noteText.map(note => (
+    //       <Pressable
+    //       key={note.id} 
+    //       onPress={() => navigation.navigate('EditNote',{noteId: note.id})}
+    //       style={styles.noteDesgin}
+    //       >
+    //       <View style={styles.row}>
+    //         <Text style={styles.note}>
+    //           {note.headtext.length == 0 ? 'Blank Note' : note.headtext}
+    //           {'\n'}
+    //         </Text>
+    //         <Text style={styles.note}>
+    //           {note.text.length == 0 ? ' ' : note.text}
+    //         </Text>
+    //       </View>
+    //       </Pressable>
+    //     ))}
+    //   </View>
+    // </ScrollView>
   );
 };
 

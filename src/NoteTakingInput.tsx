@@ -145,3 +145,4 @@ const styles = StyleSheet.create({
     marginRight: '2%',
   },
 });
+// adds
