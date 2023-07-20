@@ -75,43 +75,27 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   }, []);
   const richText = useRef<RichEditor>(null);
   return (
-    <SafeAreaView>
-      <ScrollView>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-          style={{flex: 1}}>
-          {/* <Text>Description:</Text> */}
-          <RichEditor
-            ref={richText}
-            onChange={descriptionText => {
-              console.log('descriptionText:', descriptionText);
-              setHeadText(descriptionText);
-            }}
-            initialContentHTML="Abhishek Bagiyal"
-          />
-          <RichEditor
-            ref={richText}
-            onChange={descriptionText => {
-              console.log('descriptionText:', descriptionText);
-              setText(descriptionText);
-            }}
-            initialContentHTML="Description Text"
-            editorStyle={{
-              backgroundColor: 'blue',
-            }}
-          />
-        </KeyboardAvoidingView>
-      </ScrollView>
-
-      <RichToolbar
-        editor={richText}
-        actions={[
-          actions.setBold,
-          actions.setItalic,
-          actions.setUnderline,
-          actions.heading1,
-        ]}
-        iconMap={{[actions.heading1]: handleHead}}
+    <>
+      <View style={styles.header}>
+        <TextInput
+          value={headtext}
+          style={styles.headingText}
+          onChangeText={value => {
+            setHeadText(value);
+            console.log(' live ', headtext);
+          }}
+          multiline={true}
+          placeholder="Heading"
+          // autoFocus={true}
+        />
+      </View>
+      <View style={styles.line}></View>
+      <TextInput
+        multiline={true}
+        style={styles.textInput}
+        value={text}
+        onChangeText={setText}
+        // autoFocus={true}
       />
     </SafeAreaView>
   );
