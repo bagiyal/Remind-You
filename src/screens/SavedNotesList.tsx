@@ -22,30 +22,31 @@ export const SavedNotesList: React.FC = () => {
       numColumns={2}
       renderItem={({ item, index }) => {
         return (
+          <Pressable
+          key={item.id}
+          onPress={() => navigation.navigate('EditNote', { noteId: item.id })}
+          // style={{justifyContent:'center',marginTop:40,left:10,}}
+        >
           <View style={{
             width: Dimensions.get('window').width / 2 - 30,
             height: 200,
-            backgroundColor: 'green',
+            backgroundColor: '#ffb70342',
             margin: 10,
-            marginTop:20,
+            // marginTop:20,
             borderRadius:18,
           }}>
-            <Pressable
-              key={item.id}
-              onPress={() => navigation.navigate('EditNote', { noteId: item.id })}
-              style={{justifyContent:'center',marginTop:40,left:10,}}
-            >
               <View>
-                <Text style={styles.note}>
+                <Text style={[styles.note,{fontSize:20,fontStyle:'normal',fontWeight:'600',marginTop:'5%'}]}>
                   {item.headtext.length === 0 ? 'Blank Note' : item.headtext}
                   {'\n'}
                 </Text>
                 <Text style={styles.note}>
-                  {item.text.length === 0 ? ' ' : item.text}
+                  { item.text.substring(0,60)  }
                 </Text>
               </View>
-            </Pressable>
+            
           </View>
+          </Pressable>
         )
       }}
     />
@@ -101,14 +102,12 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection:'row',
     flexWrap:'wrap',
-    flexGrow:1,
   },
   note: {
     fontSize: 17,
-    // margin:'0%',
+    marginLeft:'10%',
     paddingVertical: 0,
-    color:'white',
-    top:'-30%',
+    color:'black',
     // flex:1,
     // flexDirection:'row'
   },

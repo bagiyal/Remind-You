@@ -34,7 +34,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         <Button title="Back" color="#ffb703" onPress={saveNoteHandler} />
       ),
     });
-  }, [navigation, noteId, text,headtext]);
+  }, [navigation, noteId, text, headtext]);
 
   useEffect(() => {
     if (noteId) {
@@ -61,7 +61,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
           }}
           multiline={true}
           placeholder="Heading"
-          autoFocus={true}
+          // autoFocus={true}
         />
       </View>
       <View style={styles.line}></View>
