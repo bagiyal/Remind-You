@@ -1,14 +1,32 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import React, {useState, useEffect, useLayoutEffect} from 'react';
-import {Button, StyleSheet, Text, TextInput, View} from 'react-native';
+import React, {
+  useState,
+  useEffect,
+  useLayoutEffect,
+  createRef,
+  useRef,
+} from 'react';
+import {
+  Button,
+  KeyboardAvoidingView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Platform,
+  SafeAreaView,
+} from 'react-native';
 import {getNote, saveNote} from './services/noteStoreServices';
 import {useNavigation, useRoute} from '@react-navigation/native';
 import {EditScreenRouteProp, ScreenNavigationProp} from '../types';
+import {RichToolbar, RichEditor, actions} from 'react-native-pell-rich-editor';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 type Props = {
   noteId: string | undefined;
 };
-
+const handleHead = ({tintColor}) => <Text style={{color: tintColor}}>H1</Text>;
 export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   const [text, setText] = useState<String>('');
   const [headtext, setHeadText] = useState<String>('');
@@ -16,10 +34,17 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
   const route = useRoute<EditScreenRouteProp>();
   const navigation = useNavigation<ScreenNavigationProp>();
   // const noteId = route.params.noteId;
+  const htmlToPlain = (htmlString: string): string => {
+    const plainString = htmlString.replace(/<div[^>]*>|<\/div>/g, '');
+    return plainString;
+  };
   const saveNoteHandler = async () => {
+    const headx: string = htmlToPlain(headtext);
+    const mainText: string = htmlToPlain(text);
+    console.log(' headx ', headx, mainText);
     try {
       console.log(' function call ', headtext, text);
-      await saveNote(text, headtext, noteId);
+      await saveNote(mainText, headx, noteId);
       // navigation.navigate("Home");
       if (navigation.canGoBack()) {
         navigation.goBack();
@@ -48,7 +73,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         });
     }
   }, []);
-
+  const richText = useRef<RichEditor>(null);
   return (
     <>
       <View style={styles.header}>
@@ -72,8 +97,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         onChangeText={setText}
         // autoFocus={true}
       />
-      {/* <Button title="Save Note" onPress={saveNoteHandler} /> */}
-    </>
+    </SafeAreaView>
   );
 };
 
