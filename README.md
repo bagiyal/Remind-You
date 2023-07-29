@@ -1,3 +1,3 @@
 # Remind-You
 
-it is a remider app for you
+it is a reminder app for you
