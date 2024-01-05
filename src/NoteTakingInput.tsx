@@ -95,7 +95,7 @@ export const NoteTakingInput: React.FC<Props> = ({noteId}) => {
         style={styles.textInput}
         value={text}
         onChangeText={setText}
-        // autoFocus={true}
+        autoFocus={true}
       />
     </SafeAreaView>
   );
